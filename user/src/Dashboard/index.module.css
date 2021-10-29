@@ -1,0 +1,90 @@
+.dashboard {
+  height: 100vh;
+  width: 100%;
+  overflow-x: auto;
+  background: #eee;
+  padding: 10px;
+}
+.background {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.graphOptions {
+  flex: 5;
+}
+.variables {
+  flex: 4;
+}
+.graph {
+  padding: 10px 20px;
+  height: 100%;
+  padding-right: 5px;
+}
+.filterBtn {
+  color: #fff;
+  background: rgb(32, 136, 255);
+  outline: none;
+  margin: 15px 0 0 10px;
+  width: 100px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+}
+.graphOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  cursor: pointer;
+
+}
+.graphOptions span {
+  width: 45%;
+
+}
+
+.border{
+    border: 2px solid blue;
+}
+
+.graphOptions span img {
+  width: 100%;
+  height: 80px;
+}
+@media only screen and (max-width: 992px) {
+  .biggerDiv {
+    height: 75%;
+  }
+  .smallerDiv {
+    height: 25%;
+  }
+  .graph {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .graphOptions {
+    flex: 8;
+  }
+  .variables {
+    flex: 4;
+    height: fit-content;
+    font-size: 14px;
+  }
+  .filterOptions {
+    margin-top: 10px;
+  }
+  .graphOptions span img {
+display:none;
+  }
+  .graphOptions{
+    gap:0;
+  }
+
+  .graphOptions button{
+    margin:0;
+  }
+  .graphOptions span p{
+    color:blue;
+  }
+}
