@@ -1,43 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "./index.css";
+import { useSelector } from "react-redux";
 
-const LineChart = () => {
+const LineChart = ({axis}) => {
+  const graphData = useSelector(state => state.graphData.graphData);
   const d3Chart = useRef();
 
   useEffect(() => {
-    fetch("http://localhost:2000/")
-      .then((response) => response.json())
-      .then((data) => {
 
-        const filterData = data.filter((d) => {
-          return (
-            d.sector === "Energy" &&
-            d.topic === "gas" &&
-            d.pestle === "Industries"
-          );
-        });
-
-        let countries = [...new Set(filterData.map((each) => each.country))];
-        countries = [...countries.filter((c) => c.length !== 0)];
-        let likelihoodbyCountry = [];
-
-        countries.map((c, index) => {
-          let country = c;
-          let count = 0;
-          let total = 0;
-
-          filterData.map((each) => {
-            if (each.country === country) {
-              total += each.likelihood;
-              count += 1;
-            }
-          });
-          const average = Math.floor(total / count);
-          likelihoodbyCountry.push({ likelihood: average, country: country });
-        });
-
-        const margin = { top: 20, right: 30, bottom: 30, left: 30 };
+        const margin = { top: 30, right: 30, bottom: 60, left: 45 };
         const width =
           parseInt(d3.select("#d3demo").style("width")) -
           margin.left -
@@ -59,33 +31,48 @@ const LineChart = () => {
           );
 
         // x axis scale
+
         const x = d3
           .scaleBand()
           .domain(
-            d3.map(likelihoodbyCountry, function (d) {
-              return d.country;
+            d3.map(graphData, function (d) {
+              return d[axis.x];
             })
         )
-          .range([0, width]);
+      .range([0, width]);
+    
+    
         svg
           .append("g")
           .attr("transform", "translate(0," + height + ")")
           .call(d3.axisBottom(x));
-
+    
+          svg.append("text")             
+          .attr("transform",
+                "translate(" + (width/2) + " ," + 
+                               (height + margin.top + 20) + ")")
+          .style("text-anchor", "middle")
+          .text(axis.x);
         // Get the max value of counts
-        const max = d3.max(likelihoodbyCountry, function (d) {
-          return d.likelihood;
+        const max = d3.max(graphData, function (d) {
+          return d[axis.y];
         });
 
         // y axis scale
         const y = d3.scaleLinear().domain([0, max]).range([height, 0]);
 
         svg.append("g").call(d3.axisLeft(y));
-
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text(axis.y);    
         // Draw line
         svg
           .append("path")
-          .datum(likelihoodbyCountry)
+          .datum(graphData)
           .attr("fill", "none")
           .attr("stroke", "red")
           .attr("stroke-width", 3)
@@ -94,24 +81,17 @@ const LineChart = () => {
             d3
               .line()
               .x(function (d) {
-                return x(d.country);
+                return x(d[axis.x]);
               })
               .y(function (d) {
-                return y(d.likelihood);
+                return y(d[axis.y]);
               })
-          );
-
-        // Add title
-        svg
-          .append("text")
-          .attr("x", width / 2)
-          .attr("y", margin.top / 5 - 10)
-          .attr("text-anchor", "middle")
-          .attr("font-size", "16px")
-          .attr("fill", "white")
-          .text("New York City Film Permits entered in 2020 - Shooting Permit");
-      });
-  }, []);
+    );
+    
+  
+    
+  
+  }, [axis,graphData]);
 
   return (
     <div id="d3demo" className="background">
