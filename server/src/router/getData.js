@@ -79,22 +79,21 @@ router.post("/graphData", async (req, res) => {
   const options = req.body.filter;
   const keys = Object.keys(options);
   const { key, value } = req.body.coordinates;
-    let query;
+  let query;
 
-    query = { $and: [] };
-    keys.map((k) => {
-      const temp = {};
-      if (options[k] != "" && k !== "end_year") {
-        temp[k] = options[k];
-        query.$and.push(temp);
-      }
-      if (k === "end_year" && options[k] != null) {
-          temp[k] = { $lte: options[k] };
-        query.$and.push(temp);
-      }
-    });
-    if (query.$and.length === 0)
-        query = {};
+  query = { $and: [] };
+  keys.map((k) => {
+    const temp = {};
+    if (options[k] != "" && k !== "end_year") {
+      temp[k] = options[k];
+      query.$and.push(temp);
+    }
+    if (k === "end_year" && options[k] !== "") {
+      temp[k] = { $lte: options[k] };
+      query.$and.push(temp);
+    }
+  });
+  if (query.$and.length === 0) query = {};
 
   try {
     const result = await Test.find(query);

@@ -20,7 +20,7 @@ const dataSchema = new mongoose.Schema({
         type: String,
     },
     start_year: {
-        type: Number,
+        type: String,
     },
     impact: {
         type: String,

@@ -85,7 +85,7 @@ function Dashboard() {
 
   const [filterOptions, setFilterOptions] = useState({
     source: "",
-    end_year: null,
+    end_year: "",
     topic: "",
     sector: "",
     region: "",
@@ -103,6 +103,7 @@ function Dashboard() {
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
+    console.log(filterOptions);
     let temp = {};
     temp.filter = filterOptions;
     let co = {};
@@ -157,6 +158,8 @@ function Dashboard() {
             </div>
             <div
               className={`${styles.variables}  ${styles.background} order-lg-1 order-1`}
+              style={{height:"100%"}}
+
             >
               <div
                 className="row row-cols-1 g-0 p-2"
@@ -233,9 +236,15 @@ function Dashboard() {
                   required="true"
                   className="form-select"
                   aria-label="Default select example"
-                  onChange={(e) => onChangeFilter(e)}
+                  onChange={(e) => 
+                  {
+                    console.log(e.target.value)
+                    onChangeFilter(e);
+                  }
+                
+                  }
                 >
-                  <option selected value={null}>
+                  <option value={""}>
                     Open this select menu
                   </option>
                   {filter.source?.map((d, index) => (
@@ -258,6 +267,7 @@ function Dashboard() {
                   placeholder="YYYY"
                   type="Number"
                   name="end_year"
+                  value={filterOptions.end_year}
                   onChange={(e) =>
                     setFilterOptions({
                       ...filterOptions,
@@ -277,7 +287,7 @@ function Dashboard() {
                   aria-label="Default select example"
                   onChange={(e) => onChangeFilter(e)}
                 >
-                  <option selected value={null}>
+                  <option selected value={''}>
                     Open this select menu
                   </option>
                   {filter.topic?.map((d, index) => (
@@ -298,7 +308,7 @@ function Dashboard() {
                   aria-label="Default select example"
                   onChange={(e) => onChangeFilter(e)}
                 >
-                  <option selected value={null}>
+                  <option selected value={''}>
                     Open this select menu
                   </option>
                   {filter.sector?.map((d, index) => (
@@ -319,7 +329,7 @@ function Dashboard() {
                   aria-label="Default select example"
                   onChange={(e) => onChangeFilter(e)}
                 >
-                  <option selected value={null}>
+                  <option selected value={''}>
                     Open this select menu
                   </option>
                   {filter.source?.map((d, index) => (
@@ -340,7 +350,7 @@ function Dashboard() {
                   aria-label="Default select example"
                   onChange={(e) => onChangeFilter(e)}
                 >
-                  <option selected value={null}>
+                  <option selected value={''}>
                     Open this select menu
                   </option>
                   {filter.pestle?.map((d, index) => (
@@ -361,7 +371,7 @@ function Dashboard() {
                   aria-label="Default select example"
                   onChange={(e) => onChangeFilter(e)}
                 >
-                  <option selected value={null}>
+                  <option selected value={''}>
                     Open this select menu
                   </option>
                   {filter.country?.map((d, index) => (
